@@ -14,8 +14,13 @@
     <link rel="icon" href="/img/icon.svg" >
     <link rel="stylesheet" href="/css/main.css">
     {{#each styles}}
-    <link rel="stylesheet" href="{{css}}">
+        <link rel="stylesheet" href="{{css}}">
     {{/each}}
+    {{#if isMobile}}
+        {{#each stylesMoblile}}
+            <link rel="stylesheet" href="{{css}}">
+        {{/each}}
+    {{/if}}
     {{#each htmlStyles}}
     <style>
         {{{css}}}
@@ -23,18 +28,12 @@
     {{/each}}
 </head>
 <body>
+    
     {{{body}}}
+
     {{#each scripts}}
     <script src="{{js}}"></script>
     {{/each}}
-   <script>
-
-        if( navigator.userAgent.match(/Android/i)|| navigator.userAgent.match(/webOS/i)|| navigator.userAgent.match(/iPhone/i)|| navigator.userAgent.match(/iPad/i)|| navigator.userAgent.match(/iPod/i)|| navigator.userAgent.match(/BlackBerry/i)|| navigator.userAgent.match(/Windows Phone/i)){
-            {{#each stylesMoblile}}
-                $("head").append(`<link rel="stylesheet" href="{{css}}">`)
-            {{/each}}
-        }
-
-   </script>
+    
 </body>
 </html>
