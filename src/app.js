@@ -11,6 +11,12 @@ app.engine('handlebars', handlebars.engine('main'));
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
+
+//configuração Body-Parser
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 module.exports = {
     app,
 }
