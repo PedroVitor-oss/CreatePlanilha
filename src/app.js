@@ -21,9 +21,3 @@ module.exports = {
     app,
 }
 
-//--------------------------------------
-// app.get("/",(req,res)=>{
-//     res.render("home");
-// })
-
-// app.listen(port,console.log("aberto e funcionando"))

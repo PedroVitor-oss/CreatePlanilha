@@ -16,7 +16,7 @@ app.get("/",(req,res)=>{
             {css:createStyleHome(isMobile)},
         ],
         stylesMoblile:[
-            {css:"/css/mobile.css"}
+           
         ]
     })
 })
