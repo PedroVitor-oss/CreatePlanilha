@@ -1,0 +1,242 @@
+    <h1>Planilha</h1>
+
+<table id="table1">
+    <tr>
+        <th>periodo</th>
+        <th>DMR's</th>    
+        <th>Cod. IBGE</th>
+        <th>Residuo</th>
+        <th>classe</th>
+        <th>Volume</th>
+        <th>Tratamento</th>
+        <th>Transporte</th>
+        <th>Destino</th>
+    </tr>
+    {{#each dataPlanilha.lines}}
+    <tr>
+        <td>{{periodo}}</td>
+        <td>{{DMR}}</td>
+        <td>{{codeIBGE}}</td>
+        <td>{{residuo}}</td>
+        <td contenteditable="true" class="editable"></td>
+        <td>{{volume}}</td>
+        <td>{{tratamento}}</td>
+        <td contenteditable="true" class="editable"></td>
+        <td>{{destino}}</td>
+    </tr>
+    {{/each}}
+</table>
+<button id="btn-copiar-table1">Copiar</button>
+<h1>Soma para WORD</h1>
+<table id="table2">
+    <tr>
+        <th>Ponto de Geração</th>
+        <th>Residuo</th>
+        <th>Cod. IBAMA</th>
+        <th>Classe</th>
+        <th>Geração anual(t)</th>
+        <th>Acondicionamento</th>
+        <th>Amarzenamento</th>
+        <th>Transportadora</th>
+        <th>Tecnologia de Destinação</th>
+        <th>Destribuidora</th>
+    </tr>
+   
+</table>
+<button id="btn-copiar-table2">Copiar</button>
+
+<h1>Soma dos tratamentos</h1>
+<table id="table3">
+    <tr>
+        <th>Tratamento</th>
+        <th>Soma</th>
+    </tr>
+
+</table>
+<button id="btn-copiar-table3">Copiar</button>
+<!-- controler de copiar tabela-->
+<script>
+    const btnCopiar = document.querySelector('#btn-copiar-table1');
+    const tabela = document.querySelector('#table1');
+    const btnCopiar2 = document.querySelector('#btn-copiar-table2');
+    const tabela2 = document.querySelector('#table2');
+    const btnCopiar3 = document.querySelector('#btn-copiar-table3');
+    const tabela3 = document.querySelector('#table3');
+
+    btnCopiar.addEventListener('click', () => {
+        // Seleciona a tabela
+        const range = document.createRange();
+        range.selectNode(tabela);
+        window.getSelection().addRange(range);
+        
+        try {
+            // Copia a tabela para a área de transferência
+            document.execCommand('copy');
+            alert('Tabela copiada para a área de transferência!');
+        } catch (err) {
+            alert('Não foi possível copiar a tabela: ' + err);
+        }
+
+        // Limpa a seleção da tabela
+        window.getSelection().removeAllRanges();
+    });
+
+    btnCopiar2.addEventListener('click', () => {
+        // Seleciona a tabela
+        const range = document.createRange();
+        range.selectNode(tabela2);
+        window.getSelection().addRange(range);
+        
+        try {
+            // Copia a tabela para a área de transferência
+            document.execCommand('copy');
+            alert('Tabela copiada para a área de transferência!');
+        } catch (err) {
+            alert('Não foi possível copiar a tabela: ' + err);
+        }
+
+        // Limpa a seleção da tabela
+        window.getSelection().removeAllRanges();
+    });
+    
+    btnCopiar3.addEventListener('click', () => {
+        // Seleciona a tabela
+        const range = document.createRange();
+        range.selectNode(tabela3);
+        window.getSelection().addRange(range);
+        
+        try {
+            // Copia a tabela para a área de transferência
+            document.execCommand('copy');
+            alert('Tabela copiada para a área de transferência!');
+        } catch (err) {
+            alert('Não foi possível copiar a tabela: ' + err);
+        }
+
+        // Limpa a seleção da tabela
+        window.getSelection().removeAllRanges();
+    });
+</script>
+<!-- soma par o word-->
+<script>
+    const lines = [{{#each dataPlanilha.lines}}{ residuo: `{{residuo}}`,codeIBGE: `{{codeIBGE}}`,volume:`{{volume}}`,tratamento:`{{tratamento}}`,destino:`{{destino}}` }, {{/each}}];
+    let tableSoma = [];
+    let tableSomaTratamento = [];
+    
+    for(line of lines){
+        let newItemSoma = true;
+        for(soma of tableSoma){
+            if(line.codeIBGE == soma.codeIBGE){
+                newItemSoma= false;
+                let somaVolumeSoma = parseFloat(String(soma.volume).replace(',','.'));
+                let SomaVolumeLine = parseFloat(String(line.volume).replace(',','.'));
+                soma.volume =somaVolumeSoma+SomaVolumeLine;
+                soma.volume = Number(soma.volume).toFixed(4);
+                soma.volume = String(soma.volume).replace('.',',');
+                //console.log(SomaVolumeLine+" - "+soma.codeIBGE+" - soma new value:"+ soma.volume);
+                break;
+            }
+        }
+        if(newItemSoma){
+            tableSoma.push(line);
+            //console.log(line.volume+" - "+line.codeIBGE+" - novo")
+        }
+    }
+    const SomaTableCont = tableSoma;
+
+    SomaTableCont.forEach(soma=>{
+
+        $("table#table2").append(`
+        <tr>
+            <td contenteditable="true">...</td>
+            <td>${soma.residuo}</td>
+            <td>${soma.codeIBGE}</td>
+            <td contenteditable="true">...</td>
+            <td>${soma.volume}</td>
+            <td contenteditable="true">...</td>
+            <td contenteditable="true">...</td>
+            <td>${soma.tratamento}</td>
+            <td contenteditable="true">...</td>
+            <td>${soma.destino}</td>
+        </tr>
+        `)
+    })
+        
+    SomaTableCont.forEach(line=>{
+        let newItemSoma = true;
+        for(tratamento of tableSomaTratamento){
+            if(tratamento.tratamento == line.tratamento){
+                
+                 let somaVolumeTratamento = parseFloat(String(tratamento.volume).replace(',','.'));
+                let SomaVolumeLine = parseFloat(String(line.volume).replace(',','.'));
+                tratamento.volume = somaVolumeTratamento+SomaVolumeLine;
+                tratamento.volume = Number(tratamento.volume).toFixed(4);
+                tratamento.volume = String(tratamento.volume).replace('.',',');
+                console.log(`valor antigo ${somaVolumeTratamento} somado com ${SomaVolumeLine} novo valor ${tratamento.volume} - soma`)
+
+
+                newItemSoma = false;
+                break;
+            }
+        }
+        if(newItemSoma){
+            tableSomaTratamento.push(line);
+            console.log(`valor ${line.volume} - novo`)
+        }
+    })
+
+    tableSomaTratamento.forEach(data=>{
+        $("#table3").append(`
+            <tr>
+                <td>${data.tratamento}</td>
+                <td>${data.volume}</td>
+            </tr>
+        `)
+    })
+</script>
+<style>
+    body{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+
+    }
+    .editable
+    {
+        text-align: center;
+        outline: none;
+    }
+    button
+        {
+            background:#05f;
+            color:#fff;
+            border:none;
+            border-radius:20px;
+            padding:10px 20px;
+            font-size:1.2pc;
+
+        }
+    h1
+    {
+        text-align: center;
+    }
+      table{
+        border-collapse: collapse;;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        width: 100%;
+      }
+      td,th
+      {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+        
+        vertical-align: middle;
+      }
+      th{
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+      tr
+</style>

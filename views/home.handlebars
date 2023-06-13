@@ -1,1 +1,17 @@
-{{{Home}}}
+ <form action="/planilha" method="post" enctype="multipart/form-data">
+    <h1>PDF para planilha dados de<br> gestao do meio ambiente</h1>
+    <div class="controle">
+        <div class="drop-file">
+            <div class="element-center">
+                <img src="/img/upload.svg" alt="upload img">
+                <label for="file">Brouser</label>
+            </div>
+            <input type="file" acept=".pdf" name="pdfFile" id="file" multiple="multiple">
+        </div>
+        <div class="list-file">
+        <div class="list">
+        </div>
+        <button type="submit">Gerar planilha</button>
+        </div>
+    </div>
+</form>

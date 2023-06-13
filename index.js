@@ -1,24 +1,42 @@
 const { app } = require("./src/app");
-const { createHome,createStyleHome } = require("./components/home");
-const { port } = require("./config.json");
+const  port  = process.env.PORT ||require("./config.json").port;
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); 
 
+const { processarPDF } = require("./src/ControlerPDF");
 app.get("/",(req,res)=>{
 
     const isMobile = req.headers['user-agent'].includes("Mobile");
-    
 
     res.render("home",
     {
         title:"app node hbs",
         isMobile,
-        Home:createHome("Seja Bem Vindo","abra o index.js para começar aprogramar seu projeto"),
         htmlStyles:[
-            {css:createStyleHome(isMobile)},
         ],
         stylesMoblile:[
-           
         ]
     })
 })
+
+app.post("/planilha",upload.array('pdfFile'),async (req,res)=>{
+    const files = await req.files;
+    let rows = [];
+    for(file of files)
+    {
+        let dataFile = await processarPDF(file);
+        rows = await rows.concat(dataFile);
+            
+    }
+    //await console.log(rows);
+    res.render("planilha",{
+        title:"Planilha DMR'S",
+        dataPlanilha:{
+            lines:rows,
+        }
+    });
+
+
+});
 
 app.listen(port,console.log("aberto  em https://localhost:"+port));
