@@ -61,19 +61,22 @@ const ControlerPDF = {
             const data = await pdf(bufferFile);
             //pegando texto das paginas do arquivo
             pages = data.text.split('\n\n');
-            console.log("texto retirado");
+            
             
             //retirar paginas em branco
             pages = pages.filter(page => page.trim() !== '');
+            //retirar paginas com poucos caracteres
+            pages = pages.filter(texto => texto.length>350);
 
             const DMR = ControlerPDF.GetDataString(pages[0],'DMR nº',7);
             const Periodo = ControlerPDF.GetDataString(pages[0],"Periodo:",24);
             console.log("\narquivo de "+pages.length+" pagina com a DRM "+DMR+" e o perido "+Periodo);
             for(page of pages)
             {
-                console.log("pagina Nº "+pages.indexOf(page));
-                const textTabela = ControlerPDF.GetDataString(page,"Destinador",page.length)
-                //console.log("\ntexto da pagina\n\n"+textTabela);
+                console.log("pagina Nº "+pages.indexOf(page)+" "+page.length+" caracters ");
+                const textTabela = ControlerPDF.GetDataString(page,"Destinador",page.length);
+
+                
                 //caracteres para comparação
                 const arrayNumber = [0,1,2,3,4,5,6,7,8,9];
                 const arrayChar = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','º']
