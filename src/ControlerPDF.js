@@ -70,10 +70,10 @@ const ControlerPDF = {
 
             const DMR = ControlerPDF.GetDataString(pages[0],'DMR nº',7);
             const Periodo = ControlerPDF.GetDataString(pages[0],"Periodo:",24);
-            console.log("\narquivo de "+pages.length+" pagina com a DRM "+DMR+" e o perido "+Periodo);
+           // console.log("\narquivo de "+pages.length+" pagina com a DRM "+DMR+" e o perido "+Periodo);
             for(page of pages)
             {
-                console.log("pagina Nº "+pages.indexOf(page)+" "+page.length+" caracters ");
+                //console.log("pagina Nº "+pages.indexOf(page)+" "+page.length+" caracters ");
                 const textTabela = ControlerPDF.GetDataString(page,"Destinador",page.length);
 
                 
