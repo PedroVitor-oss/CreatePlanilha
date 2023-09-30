@@ -21,6 +21,12 @@ form h1
 {
     text-align: center;
 }
+form p
+{
+    margin: 0;
+    font-size: 1.3em;
+    color: #778
+}
 form div.controle
 {
     display:flex;
@@ -58,6 +64,20 @@ form div.controle div.list-file div.list
     flex-direction:column;
 
 }
+form div.controle div.list-file div.list div.file-item
+{
+    border-bottom: 1px solid #aaa;
+    padding: 10px 0;
+    color: #333;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-evenly;
+}
+form div.controle div.list-file div.list div.file-item i
+{
+    color:red;
+    font-size:1.2em;
+}
 form div.controle div.drop-file div.element-center
 {
     position:relative;
@@ -75,6 +95,10 @@ form div.controle div.drop-file div.element-center label
     margin:20px 0;
     font-size:1.2pc;
     padding:10px 0;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-evenly;
+    width:120px;
 }
 input
 {

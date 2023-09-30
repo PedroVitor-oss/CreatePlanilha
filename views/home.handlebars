@@ -1,17 +1,67 @@
  <form action="/planilha" method="post" enctype="multipart/form-data">
     <h1>PDF para planilha dados de<br> gestao do meio ambiente</h1>
+    <p>Por favor caregue todos os arquivos de uma so vez</p>
     <div class="controle">
         <div class="drop-file">
             <div class="element-center">
-                <img src="/img/upload.svg" alt="upload img">
-                <label for="file">Brouser</label>
+                <label for="file">upload <i class="fa-solid fa-arrow-up-from-bracket"></i> </label>
             </div>
             <input type="file" acept=".pdf" name="pdfFile" id="file" multiple="multiple">
         </div>
         <div class="list-file">
-        <div class="list">
+        <div class="list" id="list">
         </div>
         <button type="submit">Gerar planilha</button>
         </div>
     </div>
 </form>
+<script>
+    document.getElementById("file").addEventListener("change",(event)=>{
+        const fileList = document.getElementById("list");
+        //limpar lista do html
+        fileList.innerHTML = '';
+        //pegar arquivos
+        const files = event.target.files;
+        for(let i =0;i<files.length;i++)
+        {
+            const file = files[i];
+            //cont dos dados do arquivo
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item";
+            //nome do arquivo
+            const fileName = document.createElement("span");
+            fileName.textContent = file.name;
+            //botão de remover 
+            const button = document.createElement("button");
+            button.className = "remove-item";
+            button.textContent = "remover";
+            button.addEventListener("click",()=>{
+                fileList.removeChild(fileItem);
+
+                const newInput = document.createElement("input");
+                newInput.type = "file";
+                newInput.id   = 'file';
+                newInput.multiple = true;
+                //passar arquivos do antigo input para o novo
+                for(let j =0;j<files.length;j++)
+                {
+                    if(j!=i)
+                    {
+                        newInput.files[newInput.files.length] = files[j];
+                    }
+                }
+                event.target.parentNode.replaceChild(newInput,event.target);
+                newInput.addEventListener("change",(event)=>{})
+            });
+
+            //adivionar na tela 
+            fileItem.appendChild(fileName);
+            fileItem.innerHTML+=`<i class="fa-regular fa-file-pdf"></i>`;
+            //fileItem.appendChild(button);
+            fileList.appendChild(fileItem);
+
+            
+        }
+
+    })
+</script>

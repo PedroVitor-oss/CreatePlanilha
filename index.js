@@ -10,7 +10,7 @@ app.get("/",(req,res)=>{
 
     res.render("home",
     {
-        title:"app node hbs",
+        title:"create planilha DMR",
         isMobile,
         htmlStyles:[
         ],
