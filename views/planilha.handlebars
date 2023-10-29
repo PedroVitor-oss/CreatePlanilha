@@ -1,59 +1,92 @@
-    <h1>Planilha</h1>
+<link rel="stylesheet" href="/css/planilha.css">
 
-<table id="table1">
-    <tr>
-        <th>periodo</th>
-        <th>DMR's</th>    
-        <th>Cod. IBGE</th>
-        <th>Residuo</th>
-        <th>classe</th>
-        <th>Volume</th>
-        <th>Tratamento</th>
-        <th>Transporte</th>
-        <th>Destino</th>
-    </tr>
-    {{#each dataPlanilha.lines}}
-    <tr>
-        <td>{{periodo}}</td>
-        <td>{{DMR}}</td>
-        <td>{{codeIBGE}}</td>
-        <td>{{residuo}}</td>
-        <td contenteditable="true" class="editable"></td>
-        <td>{{volume}}</td>
-        <td>{{tratamento}}</td>
-        <td contenteditable="true" class="editable"></td>
-        <td>{{destino}}</td>
-    </tr>
-    {{/each}}
-</table>
-<button id="btn-copiar-table1">Copiar</button>
-<h1>Soma para WORD</h1>
-<table id="table2">
-    <tr>
-        <th>Ponto de Geração</th>
-        <th>Residuo</th>
-        <th>Cod. IBAMA</th>
-        <th>Classe</th>
-        <th>Geração anual(t)</th>
-        <th>Acondicionamento</th>
-        <th>Amarzenamento</th>
-        <th>Transportadora</th>
-        <th>Tecnologia de Destinação</th>
-        <th>Destribuidora</th>
-    </tr>
-   
-</table>
-<button id="btn-copiar-table2">Copiar</button>
+<h1>Planilhas geradas com sucesso</h1>
+<p>clique em copiar  e cole  planilha onde quiser</p>
+<section>
+    <main class="cont-buttons">
+        <button id="btn1" class="active">Principal</button>
+        <button id="btn2" >Soma de itens</button>
+        <button id="btn3" >Soma de tratamentos</button>
+    </main>
+</section>
+<section> 
+    <main class="cont-planilhas">
+        <div class="planilha active">
+            <div class="tabela">
+                <table id="table1">
+                    <tr>
+                        <th>periodo</th>
+                        <th>DMR's</th>    
+                        <th>Cod. IBGE</th>
+                        <th>Residuo</th>
+                        <th>classe</th>
+                        <th>Volume</th>
+                        <th>Tratamento</th>
+                        <th>Transporte</th>
+                        <th>Destino</th>
+                    </tr>
+                    {{#each dataPlanilha.lines}}
+                    <tr>
+                        <td>{{periodo}}</td>
+                        <td>{{DMR}}</td>
+                        <td>{{codeIBGE}}</td>
+                        <td>{{residuo}}</td>
+                        <td contenteditable="true" class="editable"></td>
+                        <td>{{volume}}</td>
+                        <td>{{tratamento}}</td>
+                        <td contenteditable="true" class="editable"></td>
+                        <td>{{destino}}</td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+            <button id="btn-copiar-table1">Copiar</button>
+        </div>
+        <div class="planilha">
+            <div class="tabela">
+                <table id="table2">
+                    <tr>
+                        <th>Ponto de Geração</th>
+                        <th>Residuo</th>
+                        <th>Cod. IBAMA</th>
+                        <th>Classe</th>
+                        <th>Geração anual(t)</th>
+                        <th>Acondicionamento</th>
+                        <th>Amarzenamento</th>
+                        <th>Transportadora</th>
+                        <th>Tecnologia de Destinação</th>
+                        <th>Destribuidora</th>
+                    </tr>
+                
+                </table>
+            </div>
+            <button id="btn-copiar-table2">Copiar</button>
+        </div>
+        <div class="planilha">
+            <div class="tabela">
+                <table id="table3">
+                    <tr>
+                        <th>Tratamento</th>
+                        <th>Soma</th>
+                    </tr>
 
-<h1>Soma dos tratamentos</h1>
-<table id="table3">
-    <tr>
-        <th>Tratamento</th>
-        <th>Soma</th>
-    </tr>
+                </table>
+            </div>
+            <button id="btn-copiar-table3">Copiar</button>
+        </div>
+    </main>
+</section>
 
-</table>
-<button id="btn-copiar-table3">Copiar</button>
+<!-- Controler de Troca de planilha-->
+<script>
+    $("main.cont-buttons button").click((event)=>{
+        $("main.cont-buttons button.active").removeClass("active");
+        let index = event.currentTarget.id[3];
+        $("div.planilha.active").removeClass("active");
+        $($("div.planilha")[index-1]).addClass("active");
+        $(event.currentTarget).addClass("active");
+    })
+</script>
 <!-- controler de copiar tabela-->
 <script>
     const btnCopiar = document.querySelector('#btn-copiar-table1');
@@ -225,7 +258,7 @@
             border-radius:20px;
             padding:10px 20px;
             font-size:1.2pc;
-
+            margin-top:10px ;
         }
     h1
     {
@@ -235,7 +268,8 @@
         border-collapse: collapse;;
         font-family: Arial, sans-serif;
         font-size: 14px;
-        width: 100%;
+        min-width: 1000px;
+        
       }
       td,th
       {
