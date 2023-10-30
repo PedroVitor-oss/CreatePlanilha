@@ -7,19 +7,22 @@ const { processarPDF } = require("./src/ControlerPDF");
 app.get("/",(req,res)=>{
 
     const isMobile = req.headers['user-agent'].includes("Mobile");
-
+    if(isMobile){
+         res.redirect("/mobile");
+    }
     res.render("home",
     {
         title:"create planilha DMR",
         isMobile,
-        htmlStyles:[
-        ],
-        stylesMoblile:[
-        ]
+       
     })
 })
 
 app.post("/planilha",upload.array('pdfFile'),async (req,res)=>{
+
+    const isMobile = req.headers['user-agent'].includes("Mobile");
+    if(isMobile) res.redirect("/mobile");
+
     const files = await req.files;
     let rows = [];
     for(file of files)
@@ -38,5 +41,9 @@ app.post("/planilha",upload.array('pdfFile'),async (req,res)=>{
 
 
 });
+
+app.get("/mobile",(req,res)=>{
+    res.render("mobi");
+})
 
 app.listen(port,console.log("aberto  em https://localhost:"+port));
