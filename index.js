@@ -12,7 +12,7 @@ app.get("/",(req,res)=>{
     }
     res.render("home",
     {
-        title:"create planilha DMR",
+        title:"DocRecycle Processor - upload",
         isMobile,
        
     })
@@ -22,18 +22,20 @@ app.post("/planilha",upload.array('pdfFile'),async (req,res)=>{
 
     const isMobile = req.headers['user-agent'].includes("Mobile");
     if(isMobile) res.redirect("/mobile");
-
+    let unisAdd = String(req.body.unis).split(',');
+    unisAdd = unisAdd.filter(d=>d.length>0);
+    console.log(unisAdd);
     const files = await req.files;
     let rows = [];
     for(file of files)
     {
-        let dataFile = await processarPDF(file);
+        let dataFile = await processarPDF(file,unisAdd);
         rows = await rows.concat(dataFile);
             
     }
     //await console.log(rows);
     res.render("planilha",{
-        title:"Planilha DMR'S",
+        title:"DocRecycle Processor- Planilha DMR'S",
         dataPlanilha:{
             lines:rows,
         }

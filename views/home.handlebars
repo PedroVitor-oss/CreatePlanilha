@@ -1,4 +1,4 @@
- <form action="/planilha" method="post" enctype="multipart/form-data">
+<form action="/planilha" method="post" enctype="multipart/form-data">
     <h1>PDF para planilha dados de<br> gestao do meio ambiente</h1>
     <p>Por favor caregue todos os arquivos de uma so vez</p>
     <div class="controle">
@@ -9,21 +9,93 @@
             <input type="file" acept=".pdf" name="pdfFile" id="file" multiple="multiple">
         </div>
         <div class="list-file">
-        <div class="list" id="list">
-        </div>
-        <button type="submit">Gerar planilha</button>
+            <div class="list" id="list">
+            </div>
+            <button type="submit">Gerar planilha</button>
         </div>
     </div>
+    <input style="width:10vw; opacity:0;margin-top:-5vh;margin-bottom:3vh;height:5px" type="text" name="unis" id="unis">
 </form>
+<section class=" other-settings no-show">
+    <label for="input-uni">
+        <p>Tipos de Unidade</p>
+        <div class="cont-input">
+            <div class="tags">
+                <span class="tag" style="background-color: #888;">Tonelada</span>
+                <span class="tag" style="background-color: #888;">Unidade</span>
+            </div>
+            <input type="text" id="input-uni" name="unidade">
+        </div>
+    </label>
+</section>
+<div style="display:flex;flex-direction:column;align-items:center" class="cont-button-settings">
+    <p onclick="showSettings()">Configurações <i class="fa-solid fa-chevron-down"></i></p>
+</div>
+
 <script>
-    document.getElementById("file").addEventListener("change",(event)=>{
+    let Unidades = [];
+    $("#input-uni").keydown(event => {
+        if ($(this).focus()) {
+            if (event.which == 13)//key code of  enter
+            {
+                const text = $("#input-uni").val();
+                Unidades.push(text);
+                $("div.cont-input div.tags").append(`<span class="tag" style="background-color:#05f;">${text} <i onclick="RemoveUni(this)" uniid="${Unidades.length - 1}" class="fa-solid fa-x"></i></span>`);
+                $("#input-uni").val('');
+                $("input#unis").val(Unidades.toString() + ',');
+            } if (event.which == 8 && $("#input-uni").val() == '') {
+                let index = Unidades.length;
+                index = index - 1;
+
+                console.log("quantidade de tags:", Unidades.length, "index for delet: ", index);
+                Unidades.slice(index, 1);
+                console.log("quantidade de itens apos remover:", Unidades.length)
+
+                index += 2;
+                const tag = $("span.tag")[index];
+                console.log(tag);
+                tag.remove()
+
+                $("input#unis").val(Unidades.toString() + ',');
+            }
+        }
+    })
+    function RemoveUni(dom) {
+        if ($(dom).has("uniid")) {
+
+            let index = Number(dom.getAttribute("uniid"));
+            Unidades.slice(index, 1);
+
+            index += 2;
+            const tag = $("span.tag")[index];
+
+            console.log(`index for remove from list: ${index - 2} quantidade de itens : ${Unidades.length} \n ${Unidades}`);
+            $("input#unis").val(Unidades.toString() + ',');
+
+            tag.remove()
+
+        }
+    }
+</script>
+
+
+<script>
+
+    function showSettings() {
+        if ($("section.other-settings").hasClass("no-show")) {
+            $("section.other-settings").removeClass("no-show");
+        } else {
+            $("section.other-settings").addClass("no-show");
+        }
+    }
+
+    document.getElementById("file").addEventListener("change", (event) => {
         const fileList = document.getElementById("list");
         //limpar lista do html
         fileList.innerHTML = '';
         //pegar arquivos
         const files = event.target.files;
-        for(let i =0;i<files.length;i++)
-        {
+        for (let i = 0; i < files.length; i++) {
             const file = files[i];
             //cont dos dados do arquivo
             const fileItem = document.createElement("div");
@@ -35,32 +107,30 @@
             const button = document.createElement("button");
             button.className = "remove-item";
             button.textContent = "remover";
-            button.addEventListener("click",()=>{
+            button.addEventListener("click", () => {
                 fileList.removeChild(fileItem);
 
                 const newInput = document.createElement("input");
                 newInput.type = "file";
-                newInput.id   = 'file';
+                newInput.id = 'file';
                 newInput.multiple = true;
                 //passar arquivos do antigo input para o novo
-                for(let j =0;j<files.length;j++)
-                {
-                    if(j!=i)
-                    {
+                for (let j = 0; j < files.length; j++) {
+                    if (j != i) {
                         newInput.files[newInput.files.length] = files[j];
                     }
                 }
-                event.target.parentNode.replaceChild(newInput,event.target);
-                newInput.addEventListener("change",(event)=>{})
+                event.target.parentNode.replaceChild(newInput, event.target);
+                newInput.addEventListener("change", (event) => { })
             });
 
             //adivionar na tela 
             fileItem.appendChild(fileName);
-            fileItem.innerHTML+=`<i class="fa-regular fa-file-pdf"></i>`;
+            fileItem.innerHTML += `<i class="fa-regular fa-file-pdf"></i>`;
             //fileItem.appendChild(button);
             fileList.appendChild(fileItem);
 
-            
+
         }
 
     })

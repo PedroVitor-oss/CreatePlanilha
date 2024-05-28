@@ -17,9 +17,10 @@ const ControlerPDF = {
             }
         }
     },
-    CompararPalavra(text, start)
+    CompararPalavra(text, start,uniAdd)
     {
         let palavras = ["Tonelada","Unidade"];
+        palavras.concat(uniAdd);
         let infoReturn = {
             igual : false,
             length: 0,
@@ -52,7 +53,7 @@ const ControlerPDF = {
             periodo    : array[8],
         })
     },
-    async processarPDF(file) {
+    async processarPDF(file,unidadesAdd) {
         try {
             const tempFilePath = file.path;
             const bufferFile = fs.readFileSync(tempFilePath);
@@ -87,8 +88,8 @@ const ControlerPDF = {
                 for(let i =0;i<textTabela.length;i++)
                 {
                     
-                    if(ControlerPDF.CompararPalavra(textTabela,i).igual){//inicio de 'Tonelada'
-                        let contador = ControlerPDF.CompararPalavra(textTabela,i).length;
+                    if(ControlerPDF.CompararPalavra(textTabela,i,unidadesAdd).igual){//inicio de 'Tonelada'
+                        let contador = ControlerPDF.CompararPalavra(textTabela,i,unidadesAdd).length;
                         
                         for(l=contador;l<52;l++){
                             const charSelect = textTabela[i+l];
@@ -158,10 +159,10 @@ const ControlerPDF = {
                                     }
                                 break;
                                 case 3://destino
-                                    if(ControlerPDF.CompararPalavra(datastring,i).igual){
+                                    if(ControlerPDF.CompararPalavra(datastring,i,unidadesAdd).igual){
                                         tableData.push( newdado );
                                         newdado = '';
-                                        i+=ControlerPDF.CompararPalavra(datastring,i).length - 1;
+                                        i+=ControlerPDF.CompararPalavra(datastring,i,unidadesAdd).length - 1;
                                     }else{
                                         newdado+=char;
                                     }

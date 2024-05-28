@@ -6,6 +6,7 @@ body{
     min-height: 100vh;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
 }
 form
 {
@@ -100,7 +101,7 @@ form div.controle div.drop-file div.element-center label
     justify-content:space-evenly;
     width:120px;
 }
-input
+input[type="file"]
 {
     opacity:0;
     background:blue;
@@ -134,4 +135,62 @@ form button
     padding:10px 20px;
     font-size:1.2pc;
     margin:10px;
+}
+
+section.other-settings.no-show
+{
+    display: none;
+}
+section.other-settings
+{
+    display: flex;
+    margin-top: -10vh;
+    margin-bottom: 10vh;
+    width: 100vw;
+    justify-content: center;
+    padding: 20px 0 ;
+}
+section.other-settings label
+{
+    width: 50vw;
+    border-bottom: 2px solid #778;
+    
+}
+section.other-settings label div.cont-input
+{
+    border-radius: 10px;
+    border: 2px solid #778;
+    margin-bottom: 5px;
+    padding: 10px ;
+    display: flex;
+    align-items: center;
+}
+section.other-settings label div.cont-input div.tags span.tag
+{
+    background-color: red;
+    border-radius: 20px;
+    padding: 5px 7px;
+    margin-left:  10px;
+    color: #fff;
+}
+section.other-settings label div.cont-input div.tags span.tag i
+{
+    font-size: 10px;
+}
+section.other-settings label div.cont-input input{
+    
+    border: none;
+    flex: 1;
+    outline: none;
+    margin-left: 10px;
+}
+div.cont-button-settings
+{
+    margin-top: -10vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    color: #778;
+    font-weight: 700;
+    font-size: 20px;
 }
